@@ -7,8 +7,8 @@ import Marker.Marker;
 
 public class Named extends Location {
 
-    public Named(String name, Position position, Marker marker, Category typ, LocationInfo locationInfo) {
-        super(name, position, marker, typ, locationInfo);
+    public Named(String name, Position position, Category typ, LocationInfo locationInfo, boolean marked, boolean folded) {
+        super(name, position,  typ, locationInfo, marked, folded);
 
     }
 }

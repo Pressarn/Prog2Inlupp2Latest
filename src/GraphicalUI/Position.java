@@ -3,18 +3,19 @@ package GraphicalUI;
 
 public class Position {
 
-    private int xpos;
-    private int ypos;
+    private int xPos;
+    private int yPos;
 
 
     public  Position (int xpos, int ypos){
-        this.xpos = xpos;
-        this.ypos = ypos;
+        this.xPos = xpos;
+        this.yPos = ypos;
     }
-    public int getX (){ return xpos; }
-    public int getY () { return ypos; }
+    public int getX (){ return xPos; }
+
+    public int getY () { return yPos; }
 
     public String toString(){
-        return "X = " + xpos + " Y = " + ypos;
+        return "X = " + xPos + " Y = " + yPos;
     }
 }

@@ -1,90 +1,131 @@
 package Marker;
 
-
-import GraphicalUI.Listener;
-import GraphicalUI.GraphicalUI;
 import Location.Category;
-
-import javax.swing.*;
-import java.awt.*;
+import Location.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Locale;
 import GraphicalUI.LocationInfo;
 
 
-public class Marker extends JComponent {
-    private GraphicalUI graphicalUI;
-    boolean marked = false;
-    boolean folded = false;
-    private Category category;
 
+public class Marker extends JComponent {
+
+    private Category category;
+    private Location location;
+    private LocationInfo locationInfo;
+    private int x;
+    private int y;
     private int [] xes = {0,25,50};
     private int [] yes = {0,50,0};
 
-    public Marker (int x, int y, Category category, LocationInfo locationInfo, boolean marked){
+    public Marker (int x, int y, Category category, LocationInfo locationInfo, Location location){
         this.category = category;
-        this.marked = marked;
+        this.location = location;
+        this.locationInfo = locationInfo;
+        this.x = x;
+        this.y = y;
 
-
-
-        LocationInfo lol = new LocationInfo(x, y, "Herro", "Merby");
-        this.add(lol);
-
-
+        repaint();
         setLayout(null);
         setBounds(x,y,50,50);
-        setPreferredSize(new Dimension(50,50));
-        setMaximumSize(new Dimension(50,50));
-        setMinimumSize(new Dimension(50,50));
         addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                setMarked(!marked);
-            }
-        });
-    }
+
+            public void mouseClicked(MouseEvent event) {
+
+                if(SwingUtilities.isLeftMouseButton(event)){
+
+                    if(!location.getMarked() && !location.getUnfolded()){
+                        location.setMarked(true);
+                    }
+                    else if (location.getMarked() && !location.getUnfolded()){
+                        location.setMarked(false);
+                    }
+                    else if (!location.getMarked() && location.getUnfolded()){
+
+                        location.setMarked(true);
+                    }
+                    else if (location.getMarked() && location.getUnfolded()){
+
+                        location.setMarked(false);
+                    }
+                    repaint();
+                }
+
+
+                else if (SwingUtilities.isRightMouseButton(event)) {
+
+                    if (!location.getUnfolded()) {
+                        location.setUnfolded(true);
+
+                    } else if (location.getUnfolded()) {
+                        location.setUnfolded(false);
+
+                    }
+                    repaint();
+                }
+                }
+
+        } );}
+
 
     public void setMarked(boolean marked) {
-        this.marked = marked;
+        location.setMarked(marked);
         repaint();
-    }
-    public boolean getMarked(){
 
-        return marked;
+    }
+
+    private void drawString(Graphics g, String text, int x, int y) {
+        for (String line : text.split("\n"))
+            g.drawString(line, x, y += g.getFontMetrics().getHeight());
     }
 
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
+        String nameAndDescription =  "" +locationInfo.getName() + "\r\n" + locationInfo.getDescription();
         Color color = Color.BLACK;
         switch (this.category) {
-            case BUS:
-                color = Color.BLUE;
-                break;
-            case TRAIN:
+            case BUSS:
                 color = Color.RED;
                 break;
-            case SUBWAY:
+            case TÅG:
                 color = Color.GREEN;
+                break;
+            case TUNNELBANA:
+                color = Color.BLUE;
                 break;
             case NONE:
                 color = Color.BLACK;
                 break;
         }
-        g.setColor(color);
-        g.fillPolygon(xes, yes, 3);
-        if (marked) {
+
+        if(!location.getUnfolded() && !location.getMarked()) {
+            setBounds(x,y,50,50);
+            g.setColor(color);
+            g.fillPolygon(xes, yes, 3);
+        }
+        else if (location.getMarked() && !location.getUnfolded()) {
+            setBounds(x,y,50,50);
+            g.setColor(color);
+            g.fillPolygon(xes, yes, 3);
             g.setColor(Color.RED);
             g.drawRect(0, 0, 49, 49);
+            setVisible(true);
+       }
+        else if (location.getUnfolded() && !location.getMarked()){
+            setBounds(x,y,50,50);
+            drawString(g, locationInfo.getName() + "\n" + locationInfo.getDescription(), 0, 0 );
 
-        if (folded){
-   //         g.drawString("LOL");
 
         }
+        else if (location.getUnfolded() && location.getMarked()){
+            setBounds(x,y,100,100);
+            drawString(g, locationInfo.getName() + "\n" + locationInfo.getDescription(), 0, 0 );
 
+            g.setColor(Color.RED);
+            g.drawRect(0,0, 100, 100);
         }
+
     }
 }

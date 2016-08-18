@@ -4,10 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ImagePanel extends JPanel {
-    private Listener listener;
+
     private ImageIcon image;
 
-    public ImagePanel(String fileName){
+    protected ImagePanel(String fileName){
         setLayout(null);
         image = new ImageIcon(fileName);
         int w = image.getIconWidth();

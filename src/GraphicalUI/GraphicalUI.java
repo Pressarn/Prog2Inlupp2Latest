@@ -2,26 +2,17 @@ package GraphicalUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class GraphicalUI extends JFrame {
 
-    JTextField write = new JTextField("Search", 10);
-    String [] category = {"Bus", "Train               ", "Subway"};
-    JList <String> categories = new JList<> (category);
-    private ImagePanel ip;
+    private JTextField write = new JTextField("Search", 10);
+    private String [] category = {"Buss", "Tåg               ", "Tunnelbana"};
+    private JList <String> categories = new JList<> (category);
     private Listener listener = new Listener(this);
-    public JTextField getWrite(){return write;}
-
-
 
     public GraphicalUI() {
         super("Register");
-
-
-
-
 
         JMenuBar mb = new JMenuBar();
         JMenu iMen = new JMenu ("Archive");
@@ -32,8 +23,10 @@ public class GraphicalUI extends JFrame {
         newMap.addActionListener(listener.getOpenListener());
         JMenuItem loadPlaces = new JMenuItem ("Load Places");
         iMen.add(loadPlaces);
+        loadPlaces.addActionListener(listener.getLoadListener());
         JMenuItem save = new JMenuItem ("Save");
         iMen.add(save);
+        save.addActionListener(listener.getSaveListener());
         JMenuItem exit = new JMenuItem ("Exit");
         iMen.add(exit);
         exit.addActionListener(listener.getExitListener());
@@ -42,11 +35,10 @@ public class GraphicalUI extends JFrame {
         JLabel labelTop = new JLabel("Top", SwingConstants.CENTER);
         add(labelTop, BorderLayout.NORTH);
 
-        save.addActionListener(listener.getSaveListener());
-        loadPlaces.addActionListener(listener.getLoadListener());
+
+
         JPanel east = new JPanel();
         east.setLayout(new BorderLayout());
-        JLabel labelSort = new JLabel();
 
         JPanel eastside = new JPanel();
         eastside.setLayout(new BoxLayout(eastside, BoxLayout.Y_AXIS));
@@ -62,8 +54,6 @@ public class GraphicalUI extends JFrame {
         eastside.add(categories);
         categories.addListSelectionListener(listener.getCategoryListener());
 
-
-
         JButton hideCategoryButton = new JButton("Hide category");
         hideCategoryButton.setAlignmentX(RIGHT_ALIGNMENT);
         eastside.add(hideCategoryButton);
@@ -76,12 +66,10 @@ public class GraphicalUI extends JFrame {
 
         JPanel north = new JPanel();
         String[] choice = {"", "Named", "Described"};
-        JComboBox<String> comboChoice = new JComboBox<String>(choice);
+        JComboBox<String> comboChoice = new JComboBox<>(choice);
         north.add(new JLabel("New:"));
         north.add(comboChoice);
         comboChoice.addActionListener(listener.getButtonPressed());
-
-
 
         north.add(write);
 
@@ -93,7 +81,6 @@ public class GraphicalUI extends JFrame {
         hideButton.addActionListener(listener.getHideButton());
         north.add(hideButton);
 
-
         JButton removeButton = new JButton ("Remove");
         north.add(removeButton);
         removeButton.addActionListener(listener.getRemoveButton());
@@ -102,29 +89,26 @@ public class GraphicalUI extends JFrame {
         north.add(whatButton);
         whatButton.addActionListener(listener.getWhatListener());
 
-
-
         add(north, BorderLayout.NORTH);
-
+        addWindowListener(listener.getExitListener());
 
         setVisible(true);
         pack();
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
+
+    public JTextField getWrite(){return write;}
+
     public String getJList(){
         return categories.getSelectedValue();
     }
 
-    public class Visa extends JFrame {
-
-    }
     public boolean getIsSelected(){
         return !categories.isSelectionEmpty();
-
     }
 
     public static void main(String[] args) {
-        GraphicalUI window = new GraphicalUI();
+        new GraphicalUI();
     }
 }

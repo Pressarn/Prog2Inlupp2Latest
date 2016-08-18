@@ -7,14 +7,14 @@ import Marker.Marker;
 
 public class Described extends Location {
 
-    public final String description;
+    private final String description;
 
-    public Described(String name, Position position, Marker marker, Category typ, String description, LocationInfo locationInfo) {
-        super(name, position, marker, typ, locationInfo);
+    public Described(String name, Position position, Category typ, String description, LocationInfo locationInfo, boolean marked, boolean folded) {
+        super(name, position,  typ, locationInfo, marked, folded);
         this.description = description;
     }
 
-    public String toString(){
-        return name + " " + position + " " + category + " " + description;
+    public String getDescription(){
+        return description;
     }
 }
